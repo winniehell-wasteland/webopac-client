@@ -1,0 +1,26 @@
+{
+  "name": "webopac-client",
+  "version": "1.0.0",
+  "description": "client for SISIS-SunRise™ webOPAC",
+  "main": "index.js",
+  "scripts": {
+    "pretest": "standard",
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/winniehell/webOPAC-client.git"
+  },
+  "author": "winniehell <git@winniehell.de>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/winniehell/webOPAC-client/issues"
+  },
+  "homepage": "https://github.com/winniehell/webOPAC-client#readme",
+  "dependencies": {
+    "superagent": "^1.6.1"
+  },
+  "devDependencies": {
+    "standard": "^5.4.1"
+  }
+}
