@@ -1,27 +1,55 @@
 'use strict'
 
-const testSettings = require('./settings')
+var mocha = require('mocha')
+require('must')
 
 const WebOPAC = require('..')
 
-testSettings.load()
-  .then((settings) => {
-    const client = new WebOPAC(settings.rootUrl)
+const MockServer = require('./mock-server')
 
-    return client.findById(362191)
-      .then(function (title) {
-        console.log(title)
-      })
-      .catch(function (e) {
-        console.error(e)
-      })
-      .then(() => {
-        if (settings.mockServer) {
-          settings.mockServer.stop()
-        }
-      })
+var settings
+
+try {
+  settings = require('./settings.local.json')
+} catch (e) {
+  // ignore and proceed
+  settings = {}
+}
+
+var mockServer
+
+if (!settings.rootUrl) {
+  mockServer = new MockServer()
+  mockServer.start()
+    .then(() => {
+      settings.rootUrl = 'http://' + mockServer.host + ':' + mockServer.port
+    })
+    .catch((e) => {
+      throw e
+    })
+}
+
+mocha.describe('WebOPAC', () => {
+  var client
+
+  mocha.before(() => {
+    client = new WebOPAC(settings.rootUrl)
   })
-  .catch(function (e) {
-    const errorLines = e.stack.split('\n')
-    errorLines.forEach(console.error)
+
+  mocha.after(() => {
+    if (mockServer) {
+      mockServer.stop()
+    }
   })
+
+  mocha.describe('#findById(id)', () => {
+    mocha.it('should return a title', (done) => {
+      client.findById(362191)
+        .then((title) => {
+          title.must.equal('Matrix [Bildtonträger]')
+        })
+        .then(done)
+        .catch(done)
+    })
+  })
+})

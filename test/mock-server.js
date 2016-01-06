@@ -4,17 +4,20 @@ var httpServer = require('http-server')
 var path = require('path')
 
 const logger = {
+  debug: () => {
+  },
   info: console.log,
+  error: console.error,
   request: function (req, res, error) {
     var date = new Date()
     if (error) {
-      logger.info(
+      logger.error(
         '[%s] "%s %s" Error (%s): "%s"',
         date, req.method, req.url,
         error.status.toString(), error.message
       )
     } else {
-      logger.info(
+      logger.debug(
         '[%s] "%s %s" "%s"',
         date, req.method, req.url,
         req.headers['user-agent']
