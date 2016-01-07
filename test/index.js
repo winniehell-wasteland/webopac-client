@@ -1,7 +1,7 @@
 'use strict'
 
+var expect = require('must')
 var mocha = require('mocha')
-require('must')
 
 const WebOPAC = require('..')
 
@@ -42,11 +42,24 @@ mocha.describe('WebOPAC', () => {
     }
   })
 
-  mocha.describe('#findById(id)', () => {
+  mocha.describe('findById(id)', () => {
     mocha.it('should return a title', (done) => {
       client.findById(362191)
         .then((title) => {
-          title.must.equal('Matrix [Bildtonträger]')
+          expect(title).to.equal('Matrix [Bildtonträger]')
+        })
+        .then(done)
+        .catch(done)
+    })
+  })
+
+  mocha.describe('startSession()', () => {
+    mocha.it('should start a session', (done) => {
+      client.startSession()
+        .then(() => {
+          expect(client.session).to.be.an.object()
+          expect(client.session.id).to.be.a.string()
+          expect(client.session.id).to.be.not.empty()
         })
         .then(done)
         .catch(done)

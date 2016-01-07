@@ -47,6 +47,35 @@ class WebOPAC {
         return null
       })
   }
+
+  startSession () {
+    const relativeUrl = '/start.do'
+    const sessionIdPattern = /<input type="hidden" name="CSId" value="(.+?)" \/>/
+
+    const handleResponse = (res) => {
+      if (res.status === 200) {
+        return res.text
+      }
+    }
+
+    const parseSessionId = (html) => {
+      const sessionIdMatch = sessionIdPattern.exec(html)
+      if (sessionIdMatch && sessionIdMatch.length === 2) {
+        return sessionIdMatch[1]
+      }
+    }
+
+    const storeSession = (sessionId) => {
+      this.session = {
+        id: sessionId
+      }
+    }
+
+    return this.apiCall(relativeUrl)
+      .then(handleResponse)
+      .then(parseSessionId)
+      .then(storeSession)
+  }
 }
 
 module.exports = WebOPAC

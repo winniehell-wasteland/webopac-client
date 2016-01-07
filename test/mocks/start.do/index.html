@@ -1,0 +1,670 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- START jsp/common/metaHeader.jsp -->
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="de"
+      lang="de"
+>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="cache-control" content="no-cache" />
+
+
+    <link rel="shortcut icon" href="/webOPACClient/images/OCLC.ico" />
+
+    <!--[if IE 7]>
+    <style type="text/css">
+        #tab-content{margin-top:5px;}
+        select {height:auto;}
+        #searchfield input#f1 {width:10em;}
+    </style>
+    <![endif]-->
+
+    <title>
+
+        webOPAC         Stadtbibliothek Braunschweig
+
+    </title>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <link media="screen" rel="stylesheet" href="/webOPACClient/jsp/common/infoguide.css"  type="text/css" />
+    <!--[if IE]>  <link rel="stylesheet" href="/webOPACClient/jsp/common/infoguide.css"  type="text/css" />  <![endif]-->
+    <!--[if IE 7]>
+    <style type="text/css">
+        #tab-content{margin-top:5px;}
+        select {height:auto;}
+        #searchfield input#f1 {width:10em;}
+    </style>
+    <![endif]-->
+
+
+
+
+
+</head>
+<!-- END of jsp/common/metaHeader.jsp -->
+
+<!-- START jsp/search/Layout.jsp -->
+
+<body onunload="unBlockAction();">
+
+<script language="javascript" type="text/javascript"
+        src="/webOPACClient/jsp/common/stdButton.js">
+</script>
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" language="javascript">
+    function send(toDo){
+
+        document.forms['AdvancedSearchForm'].methodToCallParameter.value=toDo;
+        document.forms['AdvancedSearchForm'].submit();
+        return false;
+    }
+</script>
+<div id="pageContainer">
+
+
+
+
+
+
+
+
+
+    <!-- START jsp/common/header.jsp -->
+
+
+    <div id="branding">
+  <span id="logo">
+
+
+      <img src="/webOPACClient/images/logo_stabi_neu.gif" width="150" height="33" alt="Logo der Stadtbibliothek Braunschweig" title="Katalog der Stadtbibliothek Braunschweig" />
+
+  </span>
+        <div class="info">
+            <div>
+                Diese Seite verwendet Cookies.
+                <a href="#" onclick="return cookieHelp('/webOPACClient');">
+                    Weitere Informationen..</a>
+            </div>
+            <div id="timer" class="textrot">&nbsp;</div>
+        </div>
+    </div>
+
+
+
+
+
+    <!-- START jsp/common/timer.jsp -->
+
+
+    <script type="text/javascript" language="javascript">
+
+        var timeout=(5 * 60 * 1000)  + new Date().getTime();
+        timeout-=2000;
+
+        var mesg="Diese Sitzung läuft in %VAR% Sek. ab!";
+        var toFront=false;
+
+        if(mesg.length <= 0 || mesg.indexOf("???") >= 0)
+            mesg="Diese Sitzung läuft in %VAR% Sek. ab!";
+        ticker();
+
+        function ticker()
+        {
+            var timeoutID;
+            var s;
+            var t=timeout - new Date().getTime();
+            t=(t<0)?0:Math.round(t/1000);
+            s=""+ ((t>60)?"":t.toFixed(0));
+            if(t <= 60)
+            {
+                if(toFront == false)
+                {
+                    toFront=true;
+                    window.focus();
+                }
+                var msg = mesg.replace("%VAR%", s);
+                document.getElementById("timer").innerHTML = msg;
+            }
+            if(t == 0)
+            {
+                window.clearTimeout(timeoutID);
+                window.location.replace("/webOPACClient/jsp/common/timeout.jsp");
+            }
+            else
+                timeoutID = window.setTimeout("ticker()",(t>60) ? 6000 : 1000);
+        }
+    </script>
+
+
+    <!-- END of jsp/common/timer.jsp -->
+
+
+    <script language="javascript" type="text/javascript" src="/webOPACClient/js/jquery.js" ></script>
+
+    <!-- BEGIN /bsb/mobileOPAC/addMobileFunctionality.jsp -->
+
+
+
+
+
+
+    <!-- END /bsb/mobileOPAC/addMobileFunctionality.jsp -->
+
+    <!-- END of jsp/common/header.jsp -->
+
+    <div id="mainnav">
+
+
+
+
+
+        <!-- START jsp/navigation/mainNavi.jsp -->
+
+
+        <!-- Actual Tiles Context 750 -->
+
+        <ul>
+
+
+            <li id="current"><div id="active">Suche</div>
+                <ul>
+
+
+                    <li id="current2">Einfache Suche</li>
+
+
+
+
+
+
+                    <li>
+                        <a href="/webOPACClient/search.do?methodToCall=switchSearchPage&amp;SearchType=2" title="Erweiterte Suche">Erweiterte Suche</a>
+                    </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                </ul>
+            </li>
+
+
+            <li><a href="/webOPACClient/memorizelist.do?methodToCall=show" title=""Meine Liste"">"Meine Liste"</a></li>
+
+
+
+
+
+            <li><a href="/webOPACClient/userAccount.do?methodToCall=show&amp;type=1" title="Konto">Konto</a></li>
+
+
+
+
+
+
+            <li><a href="/webOPACClient/additional.do?methodToCall=show" title="weitere Angebote">weitere Angebote</a></li>
+
+
+
+        </ul>
+        <!-- END of jsp/navigation/mainNavi.jsp -->
+
+
+
+
+
+
+        <!-- START jsp/navigation/loginnavi.jsp -->
+
+        <div id="login">
+
+            <a href="/webOPACClient/loginpage.do?methodToCall=showLogin" title="Anmelden">Anmelden</a>
+
+
+        </div>
+        <!-- END of jsp/navigation/loginnavi.jsp -->
+    </div>
+    <br class="cleaner" />
+
+
+
+
+
+
+
+
+
+
+    <!-- START jsp/navigation/bgnavi.jsp -->
+    <script language="javascript" type="text/javascript"
+            src="/webOPACClient/help/help.js">
+    </script>
+
+    <div id="bgmainnav">
+        <div id="nav2">
+            <ul>
+
+
+
+
+
+
+
+
+
+                <li>
+                    <a href="/webOPACClient/acqrequest.do?methodToCall=show" title=" Anschaffungsvorschlag">Anschaffungsvorschlag</a>
+                </li>
+
+
+
+
+
+
+                <li>
+                    <a href="#" onclick="return openHelp('/webOPACClient');"
+                       title="Hilfe">
+                        Hilfe</a>
+                </li>
+
+
+
+                <li><a href="/webOPACClient/actual.do?methodToCall=show" title="Neu im Bestand">Neu im Bestand</a></li>
+
+
+            </ul>
+        </div>
+    </div>
+    <!-- END of jsp/navigation/bgnavi.jsp -->
+
+    <br class="cleaner" />
+
+
+
+
+
+
+
+
+    <!-- START jsp/search/sublinks.jsp -->
+
+
+    <div id="info1">
+
+        <strong class="c1">Sprachauswahl</strong>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        deutsch
+
+
+        &nbsp;|&nbsp;
+
+
+
+
+        <a href="/webOPACClient/search.do?methodToCall=selectLanguage&amp;Language=en">englisch</a>
+
+
+
+
+
+
+
+    </div>
+
+    <!-- END of jsp/search/sublinks.jsp -->
+    <br class="cleaner" />
+    <div id="main">
+
+
+        <div id="SOWrap">
+            <div id="middle">
+                <form id="AdvancedSearchForm" method="get" action="/webOPACClient/search.do">
+                    <input type="hidden" name="methodToCall" value="submit" />
+                    <input type="hidden" name="CSId" value="154003N10S1ef22d1042e433c2aa3668b793e92719bdba619d" />
+                    <input type="hidden" name="methodToCallParameter" value="submitSearch" />
+                    <div class="box">
+
+
+
+
+
+
+
+
+
+
+
+                        <!-- START jsp/search/simpleSearch.jsp -->
+
+
+                        <h2>Sucheingabe</h2>
+                        <div class="box-container">
+
+                            <fieldset>
+                                <table summary="Sucheingabe" class="formular" style="width:70%">
+                                    <tr>
+                                        <td colspan="2">
+                                            <input type="hidden" name="searchCategories[0]" value="-1" />
+                                            <input type="text" name="searchString[0]" value="" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+
+                                        </td>
+                                        <td class="right">
+                                            <input type="button" name="clearSearchFields" value="Zur&uuml;cksetzen" onclick="document.forms['AdvancedSearchForm'].methodToCallParameter.value='clearSearchFields';document.forms['AdvancedSearchForm'].submit();return false;" class="dbutton" />
+                                            &nbsp;&nbsp;
+                                            <input type="submit" name="submitSearch" value="Suchen" id="submitSearch" class="dbuttonb" />
+                                        </td>
+                                    </tr>
+
+                                    <!-- for Liestal
+
+                                    -->
+
+                                </table>
+                            </fieldset>
+                        </div>
+                        <script language="javascript" type="text/javascript">
+                            setHelp("rech_einfach", "");
+                            document.getElementsByName("searchString[0]")[0].focus();
+                            setStdButtonForm("AdvancedSearchForm");
+                        </script>
+                        <!-- END of jsp/search/simpleSearch.jsp -->
+
+
+
+
+
+
+                    </div>
+                    <br />
+                    <div id="tab">
+
+
+
+
+
+
+
+
+                        <!-- START jsp/search/searchparameternavi.jsp -->
+                        <ul>
+
+
+
+                            <li id="current1"><div id="active1">Suche eingrenzen</div></li>
+
+
+
+                            <li><a href="#" onclick="send('searchPreferences');" title="Sucheinstellungen">Sucheinstellungen</a></li>
+
+
+
+                        </ul>
+                        <!-- END of jsp/search/searchparameternavi.jsp -->
+                    </div>
+                    <!-- tab -->
+                    <div class="cleaner"></div>
+                    <div id="tab-content">
+
+
+
+
+
+
+
+
+
+                        <!-- START jsp/search/searchparameter.jsp -->
+
+
+                        <input type="hidden" name="callingPage" value="searchParameters" />
+                        <fieldset>
+                            <legend>Sucheingrenzungen</legend>
+                            <table class="formular" style="width:90%">
+
+
+                                <tr>
+
+                                    <td colspan="2" width="50%">
+                                        <label for="selectedViewBranchlib">Aktuelle Zweigstelle</label>
+                                        <br />
+                                        <select name="selectedViewBranchlib" size="1" onchange="send('searchParameters');" id="selectedViewBranchlib"><option value="0" selected="selected">STADTBIBLIOTHEK</option>
+
+                                            <option value="2">Heidberg</option>
+
+                                            <option value="4">Weststadt</option></select>
+                                    </td>
+
+
+
+                                    <td width="50%" colspan="2">
+                                        <label for="selectedSearchBranchlib">Suche in Zweigstelle</label>
+                                        <select name="selectedSearchBranchlib" size="1" id="selectedSearchBranchlib"><option value="" selected="selected">Alle Zweigstellen</option>
+
+                                            <option value="0">STADTBIBLIOTHEK</option>
+
+                                            <option value="2">Heidberg</option>
+
+                                            <option value="4">Weststadt</option></select>
+                                    </td>
+
+
+                                </tr>
+
+
+
+
+                            </table>
+                        </fieldset>
+                        <!-- END of jsp/search/searchparameter.jsp -->
+
+
+
+
+                    </div>
+                </form>
+            </div>
+            <!-- middle -->
+        </div>
+        <!-- SOWrap -->
+        <div id="right">
+
+
+
+
+
+
+
+
+            <!-- START of jsp/common/welcome.jsp -->
+
+
+
+
+
+
+
+
+
+            <!-- END of jsp/common/welcome.jsp -->
+
+
+
+
+
+            <!-- START jsp/common/news.jsp -->
+
+
+            <!-- START jsp/news+info/de_750_5.jsp -->
+            <div class="box3">
+                <div class="box3-header">
+                    <div class="box3-img"><img src="images/box3-right.gif" width="8" height="8" alt="" /></div>
+                    <h2>Passwort</h2>
+                </div>
+                <p>
+                <div class="box3-content">
+                    Das Passwort für den OPAC ist Ihr Geburtsdatum: TTMMJJ
+                </div>
+                </p>
+            </div>
+            <!-- END of jsp/news+info/de_750_5.jsp -->
+            <br class="space" />
+
+
+
+
+            <!-- START jsp/news+info/de_750_1.jsp -->
+            <div class="box3">
+                <div class="box3-header">
+                    <div class="box3-img"><img src="images/box3-right.gif" width="8" height="8" alt="" /></div>
+                    <h2>Magazin-Bestellung</h2>
+                </div>
+                <p>
+                <div class="box3-content">
+                    Magazin-Bestellungen werden montags bis freitags von 10 bis 17 Uhr bearbeitet.
+                    <br><br>
+                    Bestellungen nach 17 Uhr liegen am nächsten Werktag (Mo-Fr) für Sie bereit.
+                    <br><br>
+                    Samstags werden Magazin-Bestellungen <b>nicht geliefert</b>!
+                </div>
+                </p>
+            </div>
+            <!-- END of jsp/news+info/de_750_1.jsp -->
+            <br class="space" />
+
+
+
+
+            <!-- START jsp/news+info/de_750_2.jsp -->
+            <div class="box3">
+                <div class="box3-header">
+                    <div class="box3-img"><img src="images/box3-right.gif" width="8" height="8" alt="" /></div>
+                    <h2>E-Mail-Benachrichtigung?</h2>
+                </div>
+                <p>
+                <div class="box3-content">
+                    Möchten Sie Ihre Vormerk-Benachrichtigungen, Mahnungen und
+                    Fernleih-Benachrichtigungen per E-Mail bekommen?
+                    Dann teilen Sie uns Ihre E-Mail-Adresse mit:<br>
+                    stadtbibliothek@braunschweig.de
+                </div>
+                </p>
+            </div>
+            <!-- END of jsp/news+info/de_750_2.jsp -->
+            <br class="space" />
+
+
+
+            <!-- END of jsp/common/news.jsp -->
+        </div>
+        <!-- right -->
+        <br class="cleaner" />
+    </div>
+    <!-- main -->
+
+
+
+
+
+
+
+
+
+    <!-- START jsp/common/footer.jsp -->
+
+    <div id="footer">
+
+
+
+        &nbsp;
+
+
+        <div id="copyright">
+            <a href="http://www.braunschweig.de/impressum.html" target="_blank">Impressum</a>&nbsp;
+            Copyright &copy; 2014.&nbsp;Alle Rechte vorbehalten.
+            <img src="/webOPACClient/images/OCLC.jpg" alt="OCLC" title="OCLC" width="54" height="19" />
+        </div>
+        <div class="cleaner"></div>
+    </div>
+    <!-- END of jsp/common/footer.jsp -->
+
+</div>
+</body>
+<!-- END of jsp/search/Layout.jsp -->
+<!-- START jsp/common/metaFooter.jsp -->
+</html>
+<!-- END of jsp/common/metaFooter.jsp -->
+
+
+
