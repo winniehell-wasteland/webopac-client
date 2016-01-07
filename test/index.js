@@ -42,17 +42,6 @@ mocha.describe('WebOPAC', () => {
     }
   })
 
-  mocha.describe('findById(id)', () => {
-    mocha.it('should return a title', (done) => {
-      client.findById(362191)
-        .then((title) => {
-          expect(title).to.equal('Matrix [Bildtonträger]')
-        })
-        .then(done)
-        .catch(done)
-    })
-  })
-
   mocha.describe('startSession()', () => {
     mocha.it('should start a session', (done) => {
       client.startSession()
@@ -65,4 +54,23 @@ mocha.describe('WebOPAC', () => {
         .catch(done)
     })
   })
+
+  mocha.describe('findById(id)', () => {
+    mocha.it('should return a title', (done) => {
+      client.findById(362191)
+        .then((title) => {
+          expect(title).to.equal('Matrix [Bildtonträger]')
+        })
+        .then(done)
+        .catch(done)
+    })
+  })
+})
+
+process.on('SIGTERM', () => {
+  if (mockServer) {
+    mockServer.stop()
+  }
+
+  process.exit()
 })

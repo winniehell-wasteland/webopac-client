@@ -56,6 +56,7 @@ class MockServer {
   }
 
   stop () {
+    logger.info('Shutting down mock server...')
     this.server.close()
   }
 

@@ -22,7 +22,10 @@ class WebOPAC {
     const relativeUrl = '/start.do?Login=Internet&BaseURL=this&Query=0000=%22' + id + '%22'
     const titlePattern = /&amp;title=(.+?)&amp;/
 
-    return this.apiCall(relativeUrl)
+    return this.requireSession()
+      .then((session) => {
+        return this.apiCall(relativeUrl)
+      })
       .then(function (res) {
         if (res.status !== 200) {
           throw new Error(res.status)
@@ -48,6 +51,14 @@ class WebOPAC {
       })
   }
 
+  requireSession () {
+    if (this.session && this.session.id) {
+      return Promise.resolve(this.session)
+    }
+
+    return this.startSession()
+  }
+
   startSession () {
     const relativeUrl = '/start.do'
     const sessionIdPattern = /<input type="hidden" name="CSId" value="(.+?)" \/>/
@@ -69,6 +80,7 @@ class WebOPAC {
       this.session = {
         id: sessionId
       }
+      return this.session
     }
 
     return this.apiCall(relativeUrl)
