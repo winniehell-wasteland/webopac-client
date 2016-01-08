@@ -29,6 +29,7 @@ const sessionCheck = (req, res, next) => {
 }
 
 const urlPatcher = (req, res, next) => {
+  req.url = req.url.replace(/CSId=.+?&/, '')
   req.url = req.url.replace('?', '/')
   next()
 }
@@ -39,8 +40,8 @@ app.use(session({
   resave: true,
   saveUninitialized: true
 }))
-app.use(logger)
 app.use(urlPatcher)
+app.use(logger)
 app.use(sessionCheck)
 app.use('/', express.static(path.join(__dirname, 'mocks'), {extensions: ['html']}))
 app.use(errorHandler)

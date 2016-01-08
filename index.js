@@ -20,11 +20,9 @@ class WebOPAC {
   }
 
   findById (id) {
-    const relativeUrl = '/start.do?Login=Internet&BaseURL=this&Query=0000=%22' + id + '%22'
-    const titlePattern = /&amp;title=(.+?)&amp;/
-
     return this.requireSession()
       .then((session) => {
+        const relativeUrl = `/search.do?CSId=${session.id}&methodToCall=quickSearch&Query=0000=%22${id}%22`
         return this.apiCall(relativeUrl)
       })
       .then(function (res) {
@@ -40,9 +38,10 @@ class WebOPAC {
           return res.text
         }
 
-        throw new Error('Could not parse response!')
+        throw new Error(`Could not parse response:\n${res.text}`)
       })
       .then(function (html) {
+        const titlePattern = /&amp;title=(.+?)&amp;/
         var titleMatch = titlePattern.exec(html)
         if (titleMatch && titleMatch.length === 2) {
           return decodeURIComponent(titleMatch[1]).replace(/\+/g, ' ')
