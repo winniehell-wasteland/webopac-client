@@ -23,7 +23,6 @@ if (!settings.rootUrl) {
 }
 
 mocha.describe('WebOPAC', () => {
-
   mocha.describe('startSession()', () => {
     mocha.it('should start a session', (done) => {
       const client = new WebOPAC(settings.rootUrl)

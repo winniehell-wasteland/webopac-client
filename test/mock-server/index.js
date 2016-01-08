@@ -20,7 +20,7 @@ const logger = (req, res, next) => {
 
 const sessionCheck = (req, res, next) => {
   const hasSession = req.cookies && (Object.keys(req.cookies).length > 0)
-  const isStartPage = (req.url === '/start.do') || (req.url === '/start.do/')
+  const isStartPage = (req.url === '/start.do.html')
   if (!hasSession && !isStartPage) {
     throw new Error('Session is required!')
   }
@@ -29,6 +29,7 @@ const sessionCheck = (req, res, next) => {
 }
 
 const urlPatcher = (req, res, next) => {
+  req.url += '.html'
   req.url = req.url.replace(/CSId=.+?&/, '')
   req.url = req.url.replace('?', '/')
   next()
@@ -43,7 +44,7 @@ app.use(session({
 app.use(urlPatcher)
 app.use(logger)
 app.use(sessionCheck)
-app.use('/', express.static(path.join(__dirname, 'mocks'), {extensions: ['html']}))
+app.use('/', express.static(path.join(__dirname, 'mocks')))
 app.use(errorHandler)
 
 module.exports = app
