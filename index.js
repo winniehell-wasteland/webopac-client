@@ -6,11 +6,12 @@ class WebOPAC {
 
   constructor (rootUrl) {
     this.rootUrl = rootUrl
+    this.agent = superagent.agent()
   }
 
   apiCall (relativeUrl) {
     return new Promise((resolve, reject) => {
-      superagent
+      this.agent
         .get(this.rootUrl + relativeUrl)
         .end((error, res) => {
           error ? reject(error) : resolve(res)
