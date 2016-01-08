@@ -29,9 +29,9 @@ const sessionCheck = (req, res, next) => {
 }
 
 const urlPatcher = (req, res, next) => {
-  req.url += '.html'
-  req.url = req.url.replace(/CSId=.+?&/, '')
+  req.url = req.url.replace(/&CSId=.+$/, '')
   req.url = req.url.replace('?', '/')
+  req.url += '.html'
   next()
 }
 

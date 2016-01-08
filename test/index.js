@@ -48,4 +48,16 @@ mocha.describe('WebOPAC', () => {
         .catch(done)
     })
   })
+
+  mocha.describe('findByTitle(title)', () => {
+    mocha.it('should return a hitlist', (done) => {
+      const client = new WebOPAC(settings.rootUrl)
+      client.findByTitle('Matrix')
+        .then((hitlist) => {
+          expect(hitlist).to.have.length(10)
+        })
+        .then(done)
+        .catch(done)
+    })
+  })
 })

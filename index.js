@@ -22,7 +22,7 @@ class WebOPAC {
   findById (id) {
     return this.requireSession()
       .then((session) => {
-        const relativeUrl = `/search.do?CSId=${session.id}&methodToCall=quickSearch&Query=0000=%22${id}%22`
+        const relativeUrl = `/search.do?methodToCall=quickSearch&Query=0000=%22${id}%22&CSId=${session.id}`
         return this.apiCall(relativeUrl)
       })
       .then(function (res) {
@@ -49,6 +49,43 @@ class WebOPAC {
 
         return null
       })
+  }
+
+  findByTitle (title) {
+    const handleResponse = (res) => {
+      if (res.status === 200) {
+        return res.text
+      }
+    }
+
+    const parseHitlist = (html) => {
+      const singleHitPattern = /(<!-- START jsp\/result\/simplehit\.jsp -->|<!-- END of jsp\/result\/simplehit\.jsp -->)/
+      var hitlist = html.split(singleHitPattern)
+      hitlist = hitlist.slice(1, -1)
+      hitlist = hitlist.filter((element) => {
+        return element.indexOf('methodToCall=showHit') > 0
+      })
+      hitlist = hitlist.map(parseTitle)
+      return hitlist
+    }
+
+    const parseTitle = (html) => {
+      const titlePattern = /<a href='\/webOPACClient\/singleHit\.do\?methodToCall=showHit&amp;curPos=\d+&amp;identifier=.+?'>(.+?)<\/a>/
+      const titleMatch = titlePattern.exec(html)
+      if (titleMatch && titleMatch.length === 2) {
+        var title = titleMatch[1]
+        title = title.replace('¬', '')
+        return title
+      }
+    }
+
+    return this.requireSession()
+      .then((session) => {
+        const relativeUrl = `/search.do?methodToCall=submit&methodToCallParameter=submitSearch&searchCategories%5B0%5D=331&searchString%5B0%5D=${title}&CSId=${session.id}`
+        return this.apiCall(relativeUrl)
+      })
+      .then(handleResponse)
+      .then(parseHitlist)
   }
 
   requireSession () {
