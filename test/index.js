@@ -23,14 +23,10 @@ if (!settings.rootUrl) {
 }
 
 mocha.describe('WebOPAC', () => {
-  var client
-
-  mocha.before(() => {
-    client = new WebOPAC(settings.rootUrl)
-  })
 
   mocha.describe('startSession()', () => {
     mocha.it('should start a session', (done) => {
+      const client = new WebOPAC(settings.rootUrl)
       client.startSession()
         .then(() => {
           expect(client.session).to.be.an.object()
@@ -44,6 +40,7 @@ mocha.describe('WebOPAC', () => {
 
   mocha.describe('findById(id)', () => {
     mocha.it('should return a title', (done) => {
+      const client = new WebOPAC(settings.rootUrl)
       client.findById(362191)
         .then((title) => {
           expect(title).to.equal('Matrix [Bildtonträger]')
