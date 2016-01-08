@@ -5,8 +5,6 @@ var mocha = require('mocha')
 
 const WebOPAC = require('..')
 
-const MockServer = require('./mock-server')
-
 var settings
 
 try {
@@ -16,17 +14,12 @@ try {
   settings = {}
 }
 
-var mockServer
-
 if (!settings.rootUrl) {
-  mockServer = new MockServer()
-  mockServer.start()
-    .then(() => {
-      settings.rootUrl = 'http://' + mockServer.host + ':' + mockServer.port
-    })
-    .catch((e) => {
-      throw e
-    })
+  const mockServer = require('./mock-server')
+
+  const port = 8080
+  mockServer.listen(port)
+  settings.rootUrl = 'http://localhost:' + port
 }
 
 mocha.describe('WebOPAC', () => {
@@ -34,12 +27,6 @@ mocha.describe('WebOPAC', () => {
 
   mocha.before(() => {
     client = new WebOPAC(settings.rootUrl)
-  })
-
-  mocha.after(() => {
-    if (mockServer) {
-      mockServer.stop()
-    }
   })
 
   mocha.describe('startSession()', () => {
@@ -65,12 +52,4 @@ mocha.describe('WebOPAC', () => {
         .catch(done)
     })
   })
-})
-
-process.on('SIGTERM', () => {
-  if (mockServer) {
-    mockServer.stop()
-  }
-
-  process.exit()
 })
